@@ -6,8 +6,6 @@ input = open("day1.txt").readlines()
 total = 0
 
 for i in input:
-
-    # part 1
     num = re.findall(r'\d', i)
     first = num[0]
     last = num[-1]
