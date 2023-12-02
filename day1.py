@@ -15,5 +15,5 @@ for i in input:
     total += value
     print("{} {} {}".format(first, last, value))
 
-print(total)
+print("Part 1: {}".format(total))
 
