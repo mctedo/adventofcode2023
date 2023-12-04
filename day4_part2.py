@@ -1,19 +1,29 @@
 import re
 import math
 
-cards = open("day4_puzzle.txt").readlines()
+class Card:
+    id = 0
+    winning = {}
+    myNumbers = {}
+    copies = 1
+    matches = 0
 
-points = 0
+input = open("day4_puzzle.txt").readlines()
+cards = []
 
-for c in cards:
-    splits = re.split(':|\|', c)
-    winning = splits[1].strip().split(" ")
-    mycards = splits[2].strip().split(" ")
-    matches = len([c for c in mycards if c in winning and c != ''])
-    if matches == 1: cardPoints = 1
-    elif matches ==0: cardPoints = 0
-    else: cardPoints = 1 * math.pow(2, matches-1)
-    points += cardPoints
+for (i,value) in enumerate(input):
+    numbers = re.findall(r"\d+", value)
 
+    c = Card()
+    c.ID = i
+    c.winning = numbers[1:11]
+    c.myNumbers = numbers[11:]
+    c.matches = len([m for m in c.winning if m in c.myNumbers])
+    
+    cards.append(c)
 
-print("Points: {}".format(points))
+for (i,c) in enumerate(cards):
+    for j in range(c.matches):
+        cards[i + j + 1].copies += c.copies
+    
+print(sum(c.copies for c in cards))
