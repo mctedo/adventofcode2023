@@ -42,17 +42,36 @@ for h in hands:
         else:
             char_count[char] = 1
 
-    max_char_count = max(char_count.values())
-
     jokerCount = 0
     if 'J' in char_count:
         jokerCount = char_count['J']
+        
+    # remove key 'J' from char_count
+    if 'J' in char_count:
+        del char_count['J']
 
-    if max_char_count + jokerCount == 5:
+    if char_count == {}:
+        max_char_count = 0
+    else:
+        max_char_count = max(char_count.values())
+
+    # this was so painful to work out I had to pull it out
+    def isFullHouse(char_count, max_char_count, jokerCount):
+        if max_char_count == 3 and list(char_count.values()).count(2) == 1:
+            return True
+        elif list(char_count.values()).count(2) == 2 and jokerCount >= 1:
+            return True
+        elif max_char_count == 3 and jokerCount >= 1:
+            return True
+        else:
+            return False        
+
+    # test: 'A29J2'
+    if max_char_count + jokerCount >= 5:
         fiveOfAKind.append(h)
     elif max_char_count + jokerCount == 4:
         fourOfAKind.append(h)
-    elif (3 in char_count.values() and 2 in char_count.values()) or (list(char_count.values()).count(2) + jokerCount >= 3 and 2 in char_count.values()) or (3 in char_count.values() and list(char_count.values()).count(1) + jokerCount >= 2) or (list(char_count.values()).count(2) + list(char_count.values()).count(1) + jokerCount >= 5):
+    elif isFullHouse(char_count, max_char_count, jokerCount):
         fullHouse.append(h)
     elif max_char_count + jokerCount == 3:
         threeOfAKind.append(h)
