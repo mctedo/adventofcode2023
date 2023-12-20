@@ -14,15 +14,11 @@ for block in data[1:]:
     lines = block.split("\n")
     x, t, y = lines[0].split(" ")[0].split("-")
     mapsto[x] = y
-    mappings[x] = {}
+    mappings[x] = []
 
     for l in lines[1:]:
         destination, source, length = l.split(" ")
-        destination, source, length = (int(destination), int(source), int(length))
-
-        for i in range(length):
-            mappings[x][source + i] = destination + i
-
+        mappings[x].append((int(destination), int(source), int(length)))
     
     print("Done")
 
@@ -32,8 +28,10 @@ for s in seeds:
 
     soln = str(s)
     while x != "location":
-        if s in mappings[x]:
-            s = mappings[x][s]
+        for (destination,source,length) in mappings[x]:
+            if s in range(source, source+length):
+                s = s - source + destination
+                break
 
         soln += "->" + str(s)
 
